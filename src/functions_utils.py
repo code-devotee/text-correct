@@ -1,8 +1,10 @@
 import json
+from pathlib import Path
 
 class Data_Processor:
     def __init__(self, path):
-        self.path = path
+        path = Path(path)
+        self.path = path / 'train.json' if path.is_dir() else path
 
     # 将 train.json 中的 json 转换成三元组
     def get_lable_data(self):
@@ -14,7 +16,7 @@ class Data_Processor:
             labels = []
             for stock_name in stock_names:
                 start_id = text.find(stock_name)
-                end_id = start_id + len(stock_name)
+                end_id = start_id + len(stock_name) - 1
                 labels.append((stock_name, start_id, end_id))
                 text.replace(stock_name, '$' * len(stock_name), 1)
             res.append({'text': text, 'stock_name_label': labels})
