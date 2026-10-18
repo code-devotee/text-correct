@@ -1,7 +1,7 @@
+import torch
 from torch.utils.data import Dataset
 from transformers import BertTokenizer
 import os
-import torch
 
 class NERDataset(Dataset):
     def __init__(self, train_feature, config, ent2id):
