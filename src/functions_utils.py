@@ -19,7 +19,7 @@ class Data_Processor:
                 end_id = start_id + len(stock_name) - 1
                 labels.append((stock_name, start_id, end_id))
                 text.replace(stock_name, '$' * len(stock_name), 1)
-            res.append({'text': text, 'stock_name_label': labels})
+            res.append({'text': text, 'stock_name': labels})
 
         # 90% 作为训练集， 10% 作为验证集
         train = [x for i, x in enumerate(res) if i % 10 != 0]

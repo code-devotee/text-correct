@@ -8,5 +8,9 @@ args = Args().get_parser()
 processor = Data_Processor(args.raw_data_dir)
 train, dev = processor.get_lable_data()
 path = Path(args.raw_data_dir)
-ent2id = json.load(open(path / 'train.json', mode='r', encoding="utf-8"))
-print(NERDataset(train[:10], args, ent2id))
+ent2id = json.load(open(path / 'span_ent2id.json', mode='r', encoding="utf-8"))
+
+dataset = NERDataset(train[:10], args, ent2id)
+res = dataset.collate_fn(train[:10])
+for key, value in res.items():
+    print(key, value)

@@ -53,13 +53,31 @@ class NERDataset(Dataset):
                 # 返回注意力掩码
                 return_attention_mask = True 
             )
-
             input_ids.append(encode_dict['input_ids'])
             token_type_ids.append(encode_dict['token_type_ids'])
             attention_mask.append(encode_dict['attention_mask'])
             raw_text.append(text)
 
-            bieo_label = self.get_bieo_datat(text, label)
+        for sample in batch_data:
+            text = sample['text']
+            label = sample['stock_name']
+            encode_dict = self.tokenizer._encode_plus(
+                text = list(text),
+                # 指定编码后的最大长度
+                max_length = max_len,
+                # 将序列补齐到指定长度
+                padding = 'max_length',
+                # 超长时截断
+                truncation = True,
+                # 表示输入已经按词切分, 对中文字符列表，通常是把每个字符作为一个输入单元
+                is_split_into_words = True,
+                # 返回句子类型ID，常用于区分句子A和句子B，例如0表示句子A，1表示句子B，如果只输入一个句子，则返回的全为0
+                return_token_type_ids = True,
+                # 返回注意力掩码
+                return_attention_mask = True
+            )
+
+            bieo_label = self.get_bieo_data(text, label)
             bieo_labels.append(bieo_label)
 
             start_id, end_id = [0] * len(text), [0] * len(text)
